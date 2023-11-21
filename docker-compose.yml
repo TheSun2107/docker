@@ -1,0 +1,33 @@
+version: "3.4"
+services:
+  db:
+    image: mysql:5.7
+    container_name: db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: Allinlove@1803
+      MYSQL_USER: duonguser
+      MYSQL_PASSWORD: Allinlove@1803
+    networks:
+      - net-db
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - net-app
+      - net-db
+networks:
+  net-db:
+    driver: bridge
+    internal: true
+  net-app:
+    driver: bridge
